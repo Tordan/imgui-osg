@@ -1,5 +1,5 @@
 # ImGui-OSG
-This application shows how to use OpenSceneGraph and Dear ImGui together.
+This application shows how to use [OpenSceneGraph](https://github.com/openscenegraph/OpenSceneGraph) and [Dear ImGui](https://github.com/ocornut/imgui) together.
 ![demo](demo.png)
 
 ## Prerequisites
