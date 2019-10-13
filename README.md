@@ -1,5 +1,6 @@
 # ImGui-OSG
 This application shows how to use OpenSceneGraph and Dear ImGui together.
+![demo](demo.png)
 
 ## Prerequisites
 This example requires:
