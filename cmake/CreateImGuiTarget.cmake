@@ -6,12 +6,11 @@
 # Arguments:
 #   REPOSITORY     - git repository to download sources from
 #   TAG            - git tag or branch, e.g. origin/master
-#   LOADER         - OpenGL extension loader, possible values: glew
 #   IMPLEMENTATION - ImGui implementation, check imgui examples dir
 #
 # Result:
 #   Creates target imgui::imgui with all required dependecies. Just
-# link it to target and you are good to go!
+#   link with it and you are good to go!
 
 include(CMakeFindDependencyMacro)
 include(FetchContent)
@@ -31,7 +30,7 @@ function(CreateImGuiTarget)
         ${ARGN}
     )
 
-    message(STATUS "ImGui LOADER = " ${imgui_LOADER})
+    #message(STATUS "ImGui LOADER = " ${imgui_LOADER})
     message(STATUS "ImGui IMPLEMENTATION = " ${imgui_IMPLEMENTATION})
     message(STATUS "ImGui REPOSITORY = " ${imgui_REPOSITORY})
     message(STATUS "ImGui TAG = " ${imgui_TAG})
@@ -63,32 +62,34 @@ function(CreateImGuiTarget)
         ${imgui_SOURCE_DIR}/imgui_demo.cpp
         ${imgui_SOURCE_DIR}/imgui_draw.cpp
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
     )
     target_include_directories(imgui INTERFACE
         ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
         ${imgui_SOURCE_DIR}/examples
     )
 
-    # OpenGL loader
-    if(imgui_LOADER_lower STREQUAL "glew")
-        find_dependency(GLEW)
-        target_link_libraries(imgui
-            INTERFACE
-                GLEW::GLEW
-        )
-        target_compile_definitions(imgui
-            INTERFACE
-                IMGUI_IMPL_OPENGL_LOADER_GLEW
-        )
+    # OpenGL loader (obsolette since ImGui has it's own loader since v1.80)
+    # if(imgui_LOADER_lower STREQUAL "glew")
+    #     find_dependency(GLEW)
+    #     target_link_libraries(imgui
+    #         INTERFACE
+    #             GLEW::GLEW
+    #     )
+    #     target_compile_definitions(imgui
+    #         INTERFACE
+    #             IMGUI_IMPL_OPENGL_LOADER_GLEW
+    #     )
     # TODO: add some other loaders...
     # elseif(imgui_LOADER_lower STREQUAL "gl3w")
     #     target_compile_definitions(imgui
     #         INTERFACE
     #             IMGUI_IMPL_OPENGL_LOADER_GL3W
     #     )
-    else()
-        message(FATAL_ERROR "Unknown ImGui loader ${imgui_LOADER}")
-    endif()
+    # else()
+    #     message(FATAL_ERROR "Unknown ImGui loader ${imgui_LOADER}")
+    # endif()
 
     # Implementation
     if(imgui_IMPLEMENTATION_lower STREQUAL "opengl3")
@@ -99,8 +100,8 @@ function(CreateImGuiTarget)
         )
         target_sources(imgui
             INTERFACE
-                ${imgui_SOURCE_DIR}/examples/imgui_impl_opengl3.h
-                ${imgui_SOURCE_DIR}/examples/imgui_impl_opengl3.cpp
+                ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.h
+                ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
         )
     # TODO: add other implementations...
     else()

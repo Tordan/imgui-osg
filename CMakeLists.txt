@@ -4,10 +4,9 @@ project(imgui-osg C CXX)
 # Fetch and create imgui target
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/CreateImGuiTarget.cmake)
 CreateImGuiTarget(
-    LOADER Glew
     IMPLEMENTATION OpenGL3
     REPOSITORY https://github.com/ocornut/imgui.git
-    TAG origin/master
+    TAG v1.85
 )
 
 # Prerequisites:

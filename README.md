@@ -5,7 +5,6 @@ This application shows how to use [OpenSceneGraph](https://github.com/opensceneg
 ## Prerequisites
 This example requires:
  - OpenSceneGraph
- - GLEW
  - OpenGL
 
 *Note: OpenSceneGraph manages OpenGL extensions in it's own way and the easiest way to make it work with opengl3 implementation provided by ImGui is to use GLEW.*

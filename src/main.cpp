@@ -1,19 +1,18 @@
 #include <iostream>
 
-#include "GL/glew.h"
-
 #include <osgViewer/Viewer>
 #include <osgViewer/config/SingleWindow>
 
 #include <imgui.h>
+#include <imgui_impl_opengl3.h>
 
 #include "OsgImGuiHandler.hpp"
 
-class GlewInitOperation : public osg::Operation
+class ImGuiInitOperation : public osg::Operation
 {
 public:
-    GlewInitOperation()
-        : osg::Operation("GlewInitCallback", false)
+    ImGuiInitOperation()
+        : osg::Operation("ImGuiInitOperation", false)
     {
     }
 
@@ -23,9 +22,9 @@ public:
         if (!context)
             return;
 
-        if (glewInit() != GLEW_OK)
+        if (!ImGui_ImplOpenGL3_Init())
         {
-            std::cout << "glewInit() failed\n";
+            std::cout << "ImGui_ImplOpenGL3_Init() failed\n";
         }
     }
 };
@@ -43,9 +42,8 @@ protected:
 int main(int argc, char** argv)
 {
     osgViewer::Viewer viewer;
-
     viewer.apply(new osgViewer::SingleWindow(100, 100, 640, 480));
-    viewer.setRealizeOperation(new GlewInitOperation);
+    viewer.setRealizeOperation(new ImGuiInitOperation);
     viewer.addEventHandler(new ImGuiDemo);
 
     return viewer.run();

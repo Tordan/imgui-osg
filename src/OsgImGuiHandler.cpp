@@ -44,6 +44,7 @@ private:
 OsgImGuiHandler::OsgImGuiHandler()
     : time_(0.0f), mousePressed_{false}, mouseWheel_(0.0f), initialized_(false)
 {
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
@@ -117,10 +118,6 @@ void OsgImGuiHandler::init()
     io.KeyMap[ImGuiKey_X] = osgGA::GUIEventAdapter::KeySymbol::KEY_X;
     io.KeyMap[ImGuiKey_Y] = osgGA::GUIEventAdapter::KeySymbol::KEY_Y;
     io.KeyMap[ImGuiKey_Z] = osgGA::GUIEventAdapter::KeySymbol::KEY_Z;
-
-    ImGui_ImplOpenGL3_Init();
-
-    io.RenderDrawListsFn = ImGui_ImplOpenGL3_RenderDrawData;
 }
 
 void OsgImGuiHandler::setCameraCallbacks(osg::Camera* camera)
@@ -157,6 +154,7 @@ void OsgImGuiHandler::render(osg::RenderInfo&)
 {
     drawUi();
     ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 bool OsgImGuiHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
