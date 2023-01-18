@@ -181,16 +181,22 @@ bool OsgImGuiHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionA
             const bool isKeyDown = ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN;
             const int c = ea.getKey();
             const int special_key = ConvertFromOSGKey(c);
+
+            io.KeyCtrl = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_CTRL;
+            io.KeyShift = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_SHIFT;
+            io.KeyAlt = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_ALT;
+            io.KeySuper = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_SUPER;
+            if(io.KeyCtrl) io.KeyMods   |= ImGuiKeyModFlags_Ctrl;
+            if(io.KeyShift) io.KeyMods  |= ImGuiKeyModFlags_Shift;
+            if(io.KeyAlt) io.KeyMods    |= ImGuiKeyModFlags_Alt;
+            if(io.KeySuper) io.KeyMods  |= ImGuiKeyModFlags_Super;
+
             if (special_key > 0)
             {
                 assert((special_key >= 0 && special_key < 512) && "ImGui KeysMap is an array of 512");
 
                 io.KeysDown[special_key] = isKeyDown;
 
-                io.KeyCtrl = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_CTRL;
-                io.KeyShift = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_SHIFT;
-                io.KeyAlt = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_ALT;
-                io.KeySuper = ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_SUPER;
             }
             else if (isKeyDown && c > 0 && c < 0xFF)
             {
